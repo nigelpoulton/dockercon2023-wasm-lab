@@ -4,13 +4,13 @@ Commands and config file for [Getting Started with Wasm, Docker, and Kubernetes]
 
 The workshop is divided into the following sections:
 1. [Pre-requisites](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#1-pre-requisites)
-2. [Build and test the app](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#2-build-and-test-the-app)
-3. [Package as OCI container and run on Docker Desktop](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#3-package-as-oci-container-and-run-on-docker-desktop)
-4. [Push to Docker Hub](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#4-push-to-docker-hub)
-5. [Build k3d Kubernetes cluster](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#5-build-k3d-kubernetes-cluster)
-6. [Configure Kubernetes for Wasm](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#6-configure-kubernetes-for-wasm)
-7. [Deploy Wasm app to Kubernetes and Test](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#7-deploy-wasm-app-to-kubernetes-and-test)
-8. [Verify Kubernetes Wasm config](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#8-verify-kubernetes-wasm-config)
+2. [Build and test the app](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#2-build-and-test-the-app)
+3. [Package as OCI container and run on Docker Desktop](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#3-package-as-oci-container-and-run-on-docker-desktop)
+4. [Push to Docker Hub](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#4-push-to-docker-hub)
+5. [Build k3d Kubernetes cluster](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#5-build-k3d-kubernetes-cluster)
+6. [Configure Kubernetes for Wasm](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#6-configure-kubernetes-for-wasm)
+7. [Deploy Wasm app to Kubernetes and Test](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#7-deploy-wasm-app-to-kubernetes-and-test)
+8. [Verify Kubernetes Wasm config](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#8-verify-kubernetes-wasm-config)
 
 ## 1. Pre-requisites
 
