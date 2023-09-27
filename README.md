@@ -3,7 +3,7 @@
 Commands and config file for [Getting Started with Wasm, Docker, and Kubernetes](https://www.dockercon.com/2023/session/1736607/getting-started-with-wasm-docker-and-kubernetes) at DockerCon 2023.
 
 The workshop is divided into the following sections:
-1. [Pre-requisites](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#1-pre-requisites)
+1. [Pre-requisites](https://github.com/nigelpoulton/dockercon2023-wasm-lab/tree/main#1-pre-requisites)
 2. [Build and test the app](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#2-build-and-test-the-app)
 3. [Package as OCI container and run on Docker Desktop](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#3-package-as-oci-container-and-run-on-docker-desktop)
 4. [Push to Docker Hub](https://github.com/nigelpoulton/dockercon2023-wasm-lab/edit/main/README.md#4-push-to-docker-hub)
