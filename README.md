@@ -58,7 +58,7 @@ Edit the app file (lib.rs) and change the last line of the file as follows.
 ```
 vim src/lib.rs
 <Snip>
-        .body(Some("Yo DockerCon!!!".into()))?)
+        .body(Some("Yo, DockerCon!!!".into()))?)
 ```
 
 Save your changes and run a `spin build` to build the app as a Wasm app.
@@ -69,7 +69,7 @@ spin build
 
 This command runs a `cargo build --target wasm32-wasi --release` behind the scenes to create a Wasm binary.
 
-If you run another 'tree' command, you'll see the artefacts created by the build. Notice the `dockercon.wasm` file, this is the compiled Wasm app.
+If you run another `tree` command, you'll see the artefacts created by the build. Notice the `dockercon.wasm` file, this is the compiled Wasm app.
 
 At this point, the app is built and it's time to containerize it.
 
@@ -114,8 +114,8 @@ Test it runs on your local Docker Desktop.
 docker run -d \
   --runtime=io.containerd.spin.v1 \
   --platform=wasi/wasm \
-  -p 3000:80 
-  docker-wasm:spin-0.1 /
+  -p 3000:80 \
+  nigelpoulton/docker-wasm:spin-0.1 /
 ```
 
 Check the container is running and curl its /yo endpoint on port 3000.
@@ -204,7 +204,9 @@ cat /var/lib/rancher/k3s/agent/etc/containerd/config.toml
   runtime_type = "io.containerd.lunatic.v1"
 ```
 
-Add the `spin=yes` label to node 0.
+Type `exit` to leave the container.
+
+Add the `spin=yes` label to node 0.x
 
 ```
 kubectl label nodes k3d-wasm-cluster-agent-0 spin=yes
@@ -218,8 +220,6 @@ kubectl get nodes --show-labels | grep spin
 NAME                        STATUS   ROLES     ...  LABELS
 k3d-wasm-cluster-agent-0    Ready    <none>    ...  beta.kubernetes..., spin=yes
 ```
-
-Type **exit** to come out of the container.
 
 ## 7. Deploy Wasm app to Kubernetes and Test
 
