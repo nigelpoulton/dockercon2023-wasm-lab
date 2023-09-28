@@ -167,25 +167,25 @@ Run the following command to create a Kubernetes cluster with one control plane 
 Create a cluster and test it
 
 ```
-k3d cluster create wasm-cluster \
+k3d cluster create wasm \
       --image ghcr.io/deislabs/containerd-wasm-shims/examples/k3d:v0.9.1 \
       -p "8081:80@loadbalancer" --agents 2
 
 kubectl get nodes
-NAME                        STATUS   ROLES                  AGE     VERSION
-k3d-wasm-cluster-server-0   Ready    control-plane,master   7h41m   v1.27.4+k3s1
-k3d-wasm-cluster-agent-0    Ready    <none>                 7h41m   v1.27.4+k3s1
-k3d-wasm-cluster-agent-1    Ready    <none>                 7h41m   v1.27.4+k3s1
+NAME                STATUS   ROLES                  AGE     VERSION
+k3d-wasm-server-0   Ready    control-plane,master   7h41m   v1.27.4+k3s1
+k3d-wasm-agent-0    Ready    <none>                 7h41m   v1.27.4+k3s1
+k3d-wasm-agent-1    Ready    <none>                 7h41m   v1.27.4+k3s1
 ```
 
 ## 6. Configure Kubernetes for Wasm
 
-Exec onto node 0 and list the installed Wasm shims.
+Exec onto node 1 and list the installed Wasm shims.
 
 ```
-docker exec -it k3d-wasm-cluster-agent-0 ash
+docker exec -it k3d-wasm-agent-1 ash
 
-ls /bin | grep containerd-
+ls /bin | grep shim
 containerd-shim-lunatic-v1
 containerd-shim-runc-v2
 containerd-shim-slight-v1
@@ -223,19 +223,19 @@ cat /var/lib/rancher/k3s/agent/etc/containerd/config.toml
 
 Type `exit` to leave the container.
 
-Add the `spin=yes` label to node 0.x
+Add the `wasm=yes` label to node 1.
 
 ```
-kubectl label nodes k3d-wasm-cluster-agent-0 spin=yes
+kubectl label nodes k3d-wasm-agent-1 wasm=yes
 ```
 
 Verify the label was correctly allplied.
 
 ```
-kubectl get nodes --show-labels | grep spin
+kubectl get nodes --show-labels | grep wasm=yes
 
-NAME                        STATUS   ROLES     ...  LABELS
-k3d-wasm-cluster-agent-0    Ready    <none>    ...  beta.kubernetes..., spin=yes
+NAME                STATUS   ROLES     ...  LABELS
+k3d-wasm-agent-0    Ready    <none>    ...  beta.kubernetes..., wasm=yes
 ```
 
 ## 7. Deploy Wasm app to Kubernetes and Test
@@ -257,13 +257,14 @@ metadata:
 handler: spin
 scheduling:
   nodeSelector:
-    spin: "yes"
+    wasm: "yes"
 EOF
 ```
 
 Check it installed correctly.
 
 ```
+kubectl get runtimeclass
 NAME      HANDLER   AGE
 rc-spin   spin      1m
 ```
@@ -309,8 +310,8 @@ metadata:
   name: wasm-spin
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
-    kubernetes.io/ingress.class: traefik
 spec:
+  ingressClassName: traefik
   rules:
     - http:
         paths:
@@ -328,22 +329,22 @@ Deploy it and check it with the following commands.
 ```
 kubectl apply -f app.yml
 deployment.apps/wasm-spin configured
-service/wasm-spin unchanged
-ingress.networking.k8s.io/wasm-spin unchanged
+service/wasm-spin configured
+ingress.networking.k8s.io/wasm-spin configured
 
 kubectl get deploy
 NAME        READY   UP-TO-DATE   AVAILABLE   AGE
 wasm-spin   3/3     3            3           3m
 ```
 
-Check that the three replicas are all scheduled to node 0 with the Wasm runtimes.
+Check that the three replicas are all scheduled to node 1 with the Wasm runtimes.
 
 ```
 kubectl get pods -o wide
-NAME                         READY   STATUS    NODE                       ...
-wasm-spin-5f6fccc557-5jzx6   1/1     Running   k3d-wasm-cluster-agent-0   ...
-wasm-spin-5f6fccc557-c2tq7   1/1     Running   k3d-wasm-cluster-agent-0   ...
-wasm-spin-5f6fccc557-ft6nz   1/1     Running   k3d-wasm-cluster-agent-0   ...
+NAME                         READY   STATUS    NODE               ...
+wasm-spin-5f6fccc557-5jzx6   1/1     Running   k3d-wasm-agent-1   ...
+wasm-spin-5f6fccc557-c2tq7   1/1     Running   k3d-wasm-agent-1   ...
+wasm-spin-5f6fccc557-ft6nz   1/1     Running   k3d-wasm-agent-1   ...
 ```
 
 Curl the app.
@@ -355,10 +356,10 @@ Hello, DockerCon!
 
 ## 8. Verify Kubernetes Wasm config
 
-Exec a command on node 0 and check the spin processes.
+Exec a command on node 1 and check the spin processes.
 
 ```
-docker exec -it k3d-wasm-cluster-agent-0 ps | grep spin
+docker exec -it k3d-wasm-agent-1 ps | grep spin
 78191 0        /bin/containerd-shim-spin-v1 -namespace k8s.io -id 1a47549b3bf9a
 78316 0        {youki:[2:INIT]} /bin/containerd-shim-spin-v1 -namespace k8s.io
 81368 0        /bin/containerd-shim-spin-v1 -namespace k8s.io -id 3e06901e75d51
@@ -378,10 +379,10 @@ NAME        READY   UP-TO-DATE   AVAILABLE   AGE
 wasm-spin   10/10   10           10          7m
 ```
 
-Exec onto node 0 and show the increased number of containerd spin shims (one for each replica).
+Exec onto node 1 and show the increased number of containerd spin shims (one for each replica).
 
 ```
-docker exec -it k3d-wasm-cluster-agent-0 ash
+docker exec -it k3d-wasm-agent-1 ash
 ps | grep spin
 ```
 
