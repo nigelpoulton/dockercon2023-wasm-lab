@@ -71,7 +71,24 @@ This command runs a `cargo build --target wasm32-wasi --release` behind the scen
 
 If you run another `tree` command, you'll see the artefacts created by the build. Notice the `dockercon.wasm` file, this is the compiled Wasm app.
 
-At this point, the app is built and it's time to containerize it.
+Test it works with `spin up`.
+
+```
+spin up
+
+Serving http://127.0.0.1:3000
+Available Routes:
+  dockercon: http://127.0.0.1:3000/yo
+```
+
+Point a browser to `http://127.0.0.1:3000/yo` or run the following curl command to check it works.
+
+```
+curl localhost:3000/yo
+Yo, DockerCon!!!
+```
+
+At this point, the app is built and working. It's time to containerize it.
 
 ## 3. Package as OCI container and run on Docker Desktop
 
@@ -118,10 +135,10 @@ docker run -d \
   nigelpoulton/docker-wasm:spin-0.1 /
 ```
 
-Check the container is running and curl its /yo endpoint on port 3000.
+Check the container is running and curl its `/yo` endpoint on port `3000`.
 
 ```
-docker ps
+docker ps | grep spin
 CONTAINER ID   IMAGE                   COMMAND    CREATED       STATUS      PORTS
 4b339bd4e436   docker-wasm:spin-0.1    "/"        9 secs ago    Up 9 secs   0.0.0.0:3000->80/tcp
 
