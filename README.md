@@ -404,3 +404,47 @@ Scroll up near the top to find the Wasm runtime.
     "Runtime": {
         "Name": "io.containerd.spin.v1",
 ```
+
+## Clean-up
+
+### Kubernetes clean-up
+
+If you don't plan on keeping the k3d cluster, you can delete it with the following command. This will delete all cluster resources including the Deployment, load balancer, and Ingress. Be sure to use your cluster name.
+
+```
+$ k3d cluster delete wasm
+```
+
+If you followed along on an existing cluster that you plan to keep and only wish to delete the resources deployed as part of this guide you can run the following commands.
+
+```
+$ kubectl delete -f app.yml
+deployment.apps "wasm-spin" deleted
+service "svc-wasm" deleted
+ingress.networking.k8s.io "ing-wasm" deleted
+
+$ kubectl delete runtimeclass rc-spin
+runtimeclass.node.k8s.io "rc-spin" deleted
+```
+
+### Docker clean-up
+
+As part of the lab, you created a Docker image and pushed it to a registry. 
+
+You may want to delete if from the registry.
+
+If you tested the app with Docker, you will still have a Docker containiner running on your system. Delete it with the following command be sure to use the name of the container on your host.
+
+```
+$ docker rm <id-of-container-on-your-system> -f
+```
+
+Now you can delete the image from your host. Be sure to substitute the name of your image.
+
+```
+$ docker rmi nigelpoulton/docker-wasm    spin-0.1
+```
+
+### Directory clean-up
+
+When you created the app with `spin new` and `spin build` you got a new directory called `dockercon` containing all the application artifacts. Use your favourite tool to delete the directory and all files in it. **Be sure to delete the correct directory!**
