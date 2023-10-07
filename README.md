@@ -442,7 +442,7 @@ $ docker rm <id-of-container-on-your-system> -f
 Now you can delete the image from your host. Be sure to substitute the name of your image.
 
 ```
-$ docker rmi nigelpoulton/docker-wasm    spin-0.1
+$ docker rmi nigelpoulton/docker-wasm:spin-0.1
 ```
 
 ### Directory clean-up
