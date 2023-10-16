@@ -23,8 +23,7 @@ To complete the lab, you'll need all of the following:
     - k3d version v5.6.0 or later
     - k3s version v1.27.4-k3s1 or later
 - A Docker Hub account
-
-
+- Fermyon spin
 
 ## 2. Build and test the app
 
